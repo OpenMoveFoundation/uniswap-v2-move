@@ -1,9 +1,15 @@
 [package]
 name = "UniswapV2"
 version = "1.0.0"
-authors = []
+authors = ["0xNeit"]
+upgrade_policy = "compatible"
 
 [addresses]
+uniswap_v2 = "_"
+admin = "0x1234"
+fee_admin = "0x123456"
+bob = "0xb0b"
+alice = "0xa11ce"
 
 [dev-addresses]
 
