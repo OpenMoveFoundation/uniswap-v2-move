@@ -25,6 +25,7 @@ module uniswap_v2::pair {
     use uniswap_v2::utils;
 
     friend uniswap_v2::factory;
+    friend uniswap_v2::router;
 
     const MINIMUM_LIQUIDITY: u64 = 1000;
     const LP_TOKEN_DECIMALS: u8 = 8;

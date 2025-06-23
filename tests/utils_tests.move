@@ -49,11 +49,74 @@ module uniswap_v2::utils_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = 1, location = uniswap_v2::utils)]
+    #[expected_failure(abort_code = 2, location = uniswap_v2::utils)]
     fun test_sort_two_tokens_identical_addresses() {
         init_coins();
         let token0 = usdc_token::metadata();
         let token1 = usdc_token::metadata();
         utils::sort_two_tokens(token0, token1);
+    }
+
+    // Test quote function
+    #[test]
+    fun test_quote_normal() {
+        let amount_out = utils::quote(100, 1000, 2000);
+        assert!(amount_out == 200, 0);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 4, location = uniswap_v2::utils)]
+    fun test_quote_zero_amount() {
+        utils::quote(0, 1000, 2000);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 3, location = uniswap_v2::utils)]
+    fun test_quote_zero_reserves() {
+        utils::quote(100, 0, 2000);
+    }
+
+    // Test get_amount_out function
+    #[test]
+    fun test_get_amount_out_normal() {
+        let amount_out = utils::get_amount_out(100, 1000, 2000);
+        assert!(amount_out == 181, 0); // Expected value considering 0.25% fee
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 6, location = uniswap_v2::utils)]
+    fun test_get_amount_out_zero_input() {
+        utils::get_amount_out(0, 1000, 2000);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 3, location = uniswap_v2::utils)]
+    fun test_get_amount_out_zero_reserves() {
+        utils::get_amount_out(100, 0, 2000);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 5, location = uniswap_v2::utils)]
+    fun test_get_amount_out_overflow() {
+        utils::get_amount_out(18446744073709551615, 1000, 2000);
+    }
+
+    // Test get_amount_in function
+    #[test]
+    fun test_get_amount_in_normal() {
+        let amount_in = utils::get_amount_in(100, 1000, 2000);
+        assert!(amount_in == 53, 0); // Expected value considering 0.25% fee
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 7, location = uniswap_v2::utils)]
+    fun test_get_amount_in_zero_output() {
+        utils::get_amount_in(0, 1000, 2000);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = 3, location = uniswap_v2::utils)]
+    fun test_get_amount_in_zero_reserves() {
+        utils::get_amount_in(100, 0, 2000);
     }
 }

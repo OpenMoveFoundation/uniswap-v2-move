@@ -187,9 +187,7 @@ module uniswap_v2::wbtc_token {
     }
 
     public fun deposit<T: key>(
-        store: Object<T>,
-        fa: FungibleAsset,
-        transfer_ref: &TransferRef
+        store: Object<T>, fa: FungibleAsset, transfer_ref: &TransferRef
     ) acquires State {
         assert_not_paused();
         assert_not_denylisted(object::owner(store));
@@ -197,9 +195,7 @@ module uniswap_v2::wbtc_token {
     }
 
     public fun withdraw<T: key>(
-        store: Object<T>,
-        amount: u64,
-        transfer_ref: &TransferRef
+        store: Object<T>, amount: u64, transfer_ref: &TransferRef
     ): FungibleAsset acquires State {
         assert_not_paused();
         assert_not_denylisted(object::owner(store));
@@ -220,9 +216,7 @@ module uniswap_v2::wbtc_token {
             &management.transfer_ref
         );
 
-        event::emit(
-            MintEvent { minter: signer::address_of(minter), to, amount }
-        );
+        event::emit(MintEvent { minter: signer::address_of(minter), to, amount });
     }
 
     public entry fun burn(
@@ -236,9 +230,7 @@ module uniswap_v2::wbtc_token {
     }
 
     public entry fun burn_from(
-        minter: &signer,
-        store: Object<FungibleStore>,
-        amount: u64
+        minter: &signer, store: Object<FungibleStore>, amount: u64
     ) acquires Management, Ownership, State {
         assert_not_paused();
         is_owner(minter);
@@ -266,9 +258,7 @@ module uniswap_v2::wbtc_token {
         if (state.paused == paused) { return };
         state.paused = paused;
 
-        event::emit(
-            PauseEvent { admin: signer::address_of(admin), is_paused: paused }
-        );
+        event::emit(PauseEvent { admin: signer::address_of(admin), is_paused: paused });
     }
 
     public entry fun denylist(admin: &signer, account: address) acquires Management, Ownership, State {
@@ -279,9 +269,7 @@ module uniswap_v2::wbtc_token {
         let freeze_ref = &borrow_global<Management>(wbtc_token_address()).transfer_ref;
         primary_fungible_store::set_frozen_flag(freeze_ref, account, true);
 
-        event::emit(
-            DenylistEvent { admin: signer::address_of(admin), account }
-        );
+        event::emit(DenylistEvent { admin: signer::address_of(admin), account });
     }
 
     public entry fun undenylist(admin: &signer, account: address) acquires Management, Ownership, State {
@@ -292,9 +280,7 @@ module uniswap_v2::wbtc_token {
         let freeze_ref = &borrow_global<Management>(wbtc_token_address()).transfer_ref;
         primary_fungible_store::set_frozen_flag(freeze_ref, account, false);
 
-        event::emit(
-            DenylistEvent { admin: signer::address_of(admin), account }
-        );
+        event::emit(DenylistEvent { admin: signer::address_of(admin), account });
     }
 
     public entry fun transfer_ownership(

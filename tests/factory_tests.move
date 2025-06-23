@@ -86,9 +86,7 @@ module uniswap_v2::factory_tests {
     }
 
     #[test(deployer = @uniswap_v2, bob = @bob)]
-    public fun test_get_pair_nonexistent(
-        deployer: &signer, bob: &signer
-    ) {
+    public fun test_get_pair_nonexistent(deployer: &signer, bob: &signer) {
         account::create_account_for_test(signer::address_of(bob));
         owner_tests::setup_test_with_genesis(deployer);
         test_coins::init_coins();
