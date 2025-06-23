@@ -3,6 +3,9 @@ module uniswap_v2::owner {
 
     use std::signer;
 
+    friend uniswap_v2::pair;
+    friend uniswap_v2::factory;
+
     const FEE_ADMIN: address = @fee_admin;
     const ADMIN: address = @admin;
 
@@ -171,6 +174,8 @@ module uniswap_v2::owner {
 
     #[test_only]
     friend uniswap_v2::owner_tests;
+    #[test_only]
+    friend uniswap_v2::pair_tests;
 
     #[test_only]
     public fun initialize_for_testing(sender: &signer) {

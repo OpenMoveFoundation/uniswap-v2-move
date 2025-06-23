@@ -4,6 +4,7 @@ module uniswap_v2::owner_tests {
     use aptos_framework::genesis;
 
     use uniswap_v2::owner;
+    use uniswap_v2::factory;
 
     const ADMIN: address = @admin;
     const FEE_ADMIN: address = @fee_admin;
@@ -11,7 +12,7 @@ module uniswap_v2::owner_tests {
 
     public fun setup_test(deployer: &signer) {
         owner::initialize_for_testing(deployer);
-        // amm_factory::initialize_for_testing(deployer);
+        factory::initialize_for_testing(deployer);
     }
 
     public fun setup_test_with_genesis(deployer: &signer) {
@@ -208,7 +209,7 @@ module uniswap_v2::owner_tests {
     }
 
     #[test(deployer = @uniswap_v2)]
-    public fun test_get_signer_address_matches_razor_amm(
+    public fun test_get_signer_address_matches_uniswap_v2(
         deployer: &signer
     ) {
         owner::initialize_for_test(deployer);
