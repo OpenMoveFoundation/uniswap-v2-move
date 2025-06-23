@@ -367,7 +367,7 @@ module uniswap_v2::router_tests {
     vector::push_back(&mut path, usdc_address);
 
     // Perform swap
-    let amount_in = 1 * pow(10, 8); // 1 RAZOR
+    let amount_in = 1 * pow(10, 8); // 1 WBTC
     let min_amount_out = 1 * pow(10, 7); // Minimum 1 USDC expected
     router::swap_exact_tokens_for_tokens(
       bob,
@@ -425,7 +425,7 @@ module uniswap_v2::router_tests {
 
     // Swap for exact output
     let amount_out = 1 * pow(10, 8); // Want exactly 1 USDC
-    let max_amount_in = 2 * pow(10, 8); // Willing to spend up to 2 RAZOR
+    let max_amount_in = 2 * pow(10, 8); // Willing to spend up to 2 WBTC
     router::swap_tokens_for_exact_tokens(
       bob,
       amount_out,
@@ -528,7 +528,7 @@ module uniswap_v2::router_tests {
     // Try to swap with unreasonably high minimum output
     router::swap_exact_tokens_for_tokens(
       bob,
-      1 * pow(10, 8), // Input 1 RAZOR
+      1 * pow(10, 8), // Input 1 WBTC
       1000 * pow(10, 8), // Expect minimum 1000 USDC (impossible)
       path,
       @bob,
@@ -555,7 +555,7 @@ module uniswap_v2::router_tests {
     let usdc_address = usdc_token::usdc_token_address();
     let usdt_address = usdt_token::usdt_token_address();
 
-    // Create RAZOR-USDC pool
+    // Create WBTC-USDC pool
     router::add_liquidity(
       bob,
       wbtc_address,
@@ -584,7 +584,7 @@ module uniswap_v2::router_tests {
     let bob_wbtc_before = wbtc_token::balance_of(@bob);
     let bob_usdt_before = usdt_token::balance_of(@bob);
 
-    // Create path for multi-hop swap: RAZOR -> USDC -> USDT
+    // Create path for multi-hop swap: WBTC -> USDC -> USDT
     let path = vector::empty<address>();
     vector::push_back(&mut path, wbtc_address);
     vector::push_back(&mut path, usdc_address);
@@ -593,7 +593,7 @@ module uniswap_v2::router_tests {
     // Perform multi-hop swap
     router::swap_exact_tokens_for_tokens(
       bob,
-      1 * pow(10, 8), // Input 1 RAZOR
+      1 * pow(10, 8), // Input 1 WBTC
       0, // Any output amount acceptable
       path,
       @bob,
@@ -603,7 +603,7 @@ module uniswap_v2::router_tests {
     let bob_wbtc_after = wbtc_token::balance_of(@bob);
     let bob_usdt_after = usdt_token::balance_of(@bob);
 
-    assert!(bob_wbtc_before - bob_wbtc_after == 1 * pow(10, 8), 1); // Spent exactly 1 RAZOR
+    assert!(bob_wbtc_before - bob_wbtc_after == 1 * pow(10, 8), 1); // Spent exactly 1 WBTC
     assert!(bob_usdt_after > bob_usdt_before, 2); // Received some USDT
   }
 }

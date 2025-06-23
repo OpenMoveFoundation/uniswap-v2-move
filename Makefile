@@ -22,3 +22,7 @@ test:
 	aptos move test \
 	--named-addresses "uniswap_v2=$(DEV_ACCOUNT)" \
 	--coverage
+
+docs:
+	aptos move document \
+	--named-addresses "uniswap_v2=$(DEV_ACCOUNT)"
